@@ -1,4 +1,4 @@
-# Explainable Thermal-Driven Predictive Maintenance Decision Copilot
+# Thermal-Driven Predictive Maintenance Decision Copilot
 
 ## Problem Statement
 
@@ -8,6 +8,6 @@ Current maintenance workflows typically involve manual inspection of thermal ima
 
 There is a clear need for an intelligent, explainable, and safety-aware system that can transform raw thermal signals into early, actionable maintenance insights. Such a system should not only detect thermal anomalies but also ground its recommendations in historical maintenance evidence and present its reasoning in a form that engineers can understand, verify, and trust.
 
-This project addresses that gap by proposing an **Explainable Thermal-Driven Predictive Maintenance Decision Copilot**. The system combines computer vision–based thermal analysis, retrieval of similar past maintenance incidents using Retrieval-Augmented Generation (RAG), and local large language model (LLM) reasoning to infer likely failure modes and recommend safe next actions. Rather than acting as an autonomous controller, the system is designed as a decision support tool that augments human judgment with data-driven, explainable insights.
+This project addresses that gap by proposing an **Thermal-Driven Predictive Maintenance Decision Copilot**. The system combines computer vision–based thermal analysis, retrieval of similar past maintenance incidents using Retrieval-Augmented Generation (RAG), and local large language model (LLM) reasoning to infer likely failure modes and recommend safe next actions. Rather than acting as an autonomous controller, the system is designed as a decision support tool that augments human judgment with data-driven, explainable insights.
 
 By converting thermal anomalies into structured features, grounding recommendations in historical cases, and applying guardrails to prevent unsafe or hallucinated outputs, the proposed system aims to reduce unplanned downtime, improve maintenance planning, and increase trust in AI-assisted industrial decision-making. The approach is designed to be practical, auditable, and extensible, making it suitable for real-world industrial environments as well as future expansion to additional sensor modalities and equipment types.
