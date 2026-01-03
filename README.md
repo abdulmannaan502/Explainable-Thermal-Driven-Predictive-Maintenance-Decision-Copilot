@@ -1,0 +1,13 @@
+# Explainable Thermal-Driven Predictive Maintenance Decision Copilot
+
+## Problem Statement
+
+Modern manufacturing plants rely on rotating and electromechanical equipment such as motors, pumps, gearboxes, and bearings, whose unexpected failures can result in costly downtime, production losses, and safety risks. Thermal cameras are widely used to monitor such equipment because abnormal temperature patterns often appear well before visible or mechanical failure occurs. However, despite the availability of thermal data, maintenance decision-making today remains largely reactive.
+
+Current maintenance workflows typically involve manual inspection of thermal images, subjective interpretation of temperature deviations, and ad-hoc correlation with historical maintenance records. Engineers often act only after anomalies become severe or failures occur, leading to unplanned downtime, higher repair costs, and avoidable operational risk. While predictive maintenance solutions exist, many function as black boxes—flagging anomalies without explaining the underlying cause, the supporting evidence, or the appropriate next action. This lack of transparency limits trust and real-world adoption.
+
+There is a clear need for an intelligent, explainable, and safety-aware system that can transform raw thermal signals into early, actionable maintenance insights. Such a system should not only detect thermal anomalies but also ground its recommendations in historical maintenance evidence and present its reasoning in a form that engineers can understand, verify, and trust.
+
+This project addresses that gap by proposing an **Explainable Thermal-Driven Predictive Maintenance Decision Copilot**. The system combines computer vision–based thermal analysis, retrieval of similar past maintenance incidents using Retrieval-Augmented Generation (RAG), and local large language model (LLM) reasoning to infer likely failure modes and recommend safe next actions. Rather than acting as an autonomous controller, the system is designed as a decision support tool that augments human judgment with data-driven, explainable insights.
+
+By converting thermal anomalies into structured features, grounding recommendations in historical cases, and applying guardrails to prevent unsafe or hallucinated outputs, the proposed system aims to reduce unplanned downtime, improve maintenance planning, and increase trust in AI-assisted industrial decision-making. The approach is designed to be practical, auditable, and extensible, making it suitable for real-world industrial environments as well as future expansion to additional sensor modalities and equipment types.
