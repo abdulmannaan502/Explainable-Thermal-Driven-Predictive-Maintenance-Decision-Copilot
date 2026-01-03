@@ -1,0 +1,52 @@
+[
+  {
+    "equipment_type": "motor",
+    "thermal_pattern": "localized bearing hotspot",
+    "observed_temperature": "90-110C",
+    "failure_mode": "bearing_overheating",
+    "root_cause": "insufficient lubrication",
+    "action_taken": "bearing lubrication and inspection",
+    "downtime_hours": 2,
+    "repair_cost_usd": 300
+  },
+  {
+    "equipment_type": "motor",
+    "thermal_pattern": "intense bearing hotspot",
+    "observed_temperature": "110-130C",
+    "failure_mode": "bearing_wear",
+    "root_cause": "bearing degradation",
+    "action_taken": "bearing replacement",
+    "downtime_hours": 6,
+    "repair_cost_usd": 1200
+  },
+  {
+    "equipment_type": "motor",
+    "thermal_pattern": "elongated thermal region along shaft",
+    "observed_temperature": "85-100C",
+    "failure_mode": "shaft_misalignment",
+    "root_cause": "improper alignment during installation",
+    "action_taken": "shaft realignment",
+    "downtime_hours": 4,
+    "repair_cost_usd": 800
+  },
+  {
+    "equipment_type": "motor",
+    "thermal_pattern": "uniform elevated temperature",
+    "observed_temperature": "80-95C",
+    "failure_mode": "overloading",
+    "root_cause": "excessive mechanical load",
+    "action_taken": "load reduction and cooling inspection",
+    "downtime_hours": 3,
+    "repair_cost_usd": 500
+  },
+  {
+    "equipment_type": "motor",
+    "thermal_pattern": "minor localized hotspot",
+    "observed_temperature": "75-85C",
+    "failure_mode": "early_stage_bearing_issue",
+    "root_cause": "initial lubrication degradation",
+    "action_taken": "scheduled maintenance",
+    "downtime_hours": 1,
+    "repair_cost_usd": 150
+  }
+]
