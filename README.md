@@ -1,164 +1,215 @@
 # 🔥 Explainable Thermal-Driven Predictive Maintenance Decision Copilot
 
-## 📌 Overview
-This project implements an **Explainable, Evidence-Grounded Predictive Maintenance Decision Copilot** for industrial equipment (focused on electric motors).  
-Instead of using black-box image classifiers, the system extracts **interpretable thermal features**, reasons over **historical maintenance incidents using RAG**, and uses a **local LLaMA LLM** to generate **safe, auditable maintenance recommendations**.
+An end-to-end **AI decision-support system** for industrial predictive maintenance that combines **thermal image analysis**, **retrieval-augmented reasoning (RAG)**, **local LLM inference**, and **explicit safety & risk guardrails**.
 
-The system is designed as a **decision-support copilot**, not an autonomous controller.
-
----
-
-## 🎯 Problem Statement
-In industrial plants, thermal cameras are widely used to monitor motors, pumps, and bearings. However:
-
-- Engineers manually inspect thermal images
-- Correlating anomalies with historical failures is time-consuming
-- Most AI solutions are black-box classifiers
-- LLM-based tools risk hallucinated or unsafe recommendations
-
-This leads to **reactive maintenance**, unplanned downtime, and higher costs.
+This project is designed for **real factories**, focusing on:
+- Explainability
+- Safety
+- Human-in-the-loop decision making
 
 ---
 
-## 💡 Solution Summary
-This project builds an **end-to-end, explainable AI pipeline** that:
-
-1. Detects thermal anomalies from motor thermal images  
-2. Converts image data into **engineering-meaningful features**  
-3. Retrieves similar **historical maintenance incidents (RAG)**  
-4. Uses a **local LLaMA model** for reasoning (offline, secure)  
-5. Applies **guardrails and confidence gating** before output  
-
-The final output is a **structured, safe maintenance decision**, not raw AI text.
+## 📌 One-Line Summary
+Instead of blindly predicting failures, this system **detects thermal anomalies, reasons using historical evidence, applies safety guardrails, and decides whether to recommend or escalate actions to humans**.
 
 ---
 
-## 🧠 System Architecture
+## 🧱 System Architecture
 
-Thermal Image  
-→ Explainable CV (Hotspot, ΔT, Severity)  
-→ Engineering Fault Interpretation  
-→ RAG (Historical Maintenance Logs)  
-→ Local LLaMA (Reasoning Only)  
-→ Guardrails & Safety Checks  
-→ Final Decision Copilot Output (JSON)
+Thermal Image
+↓
+Thermal CV Anomaly Detection
+↓
+Structured Anomaly Features
+↓
+Engineering Fault Interpretation
+↓
+RAG (Historical Maintenance Logs)
+↓
+Local LLM Reasoning (Mistral-7B)
+↓
+PHASE 2: Safety Guardrails & Risk Scoring
+↓
+PHASE 3: Temporal Trend Analysis
+↓
+Human-in-the-Loop Decision Support
 
----
-
-## 🔍 Key Design Principles
-- Explainability first (no black-box CNNs)
-- No image training required
-- Evidence-grounded reasoning via RAG
-- Local LLM inference
-- Human-in-the-loop safety
-
----
-
-## 🧪 Data Strategy
-
-### Thermal Images
-- Synthetic thermal images simulating realistic motor surface temperature distributions
-- Physics-consistent patterns:
-  - Smooth gradients → normal operation
-  - Localized hotspots → bearing overheating
-
-### Historical Data
-- Synthetic but realistic maintenance logs
-- Used only at inference time for reasoning
 
 ---
 
-## ⚙️ Pipeline Breakdown
+## ⚙️ Tech Stack
 
-### Explainable Thermal Feature Extraction
+- Computer Vision: OpenCV, NumPy
+- LLM: Mistral-7B (GGUF) via llama.cpp (local, offline)
+- RAG: In-memory vector retrieval of maintenance logs
+- UI: Streamlit
+- Guardrails: Custom safety + confidence validation
+- Trend Analysis: Lightweight temporal reasoning
+- Runtime: Fully local (no cloud, no APIs)
+
+---
+
+# 🟢 PHASE 1 — Explainable Fault Understanding
+
+### Goal
+Answer:
+> **“What is happening to the machine right now?”**
+
+### What Happens
+
+#### 1. Thermal Image Processing
+- Thermal image converted to grayscale heatmap
+- Hotspots detected statistically (not ML black box)
+
+#### 2. Anomaly Feature Extraction
+Extracted features:
 - Mean temperature
 - Maximum temperature
-- Temperature delta (ΔT)
+- Temperature delta
 - Hotspot count
 - Severity score
 
-### Engineering Fault Interpretation
-Rule-based logic converts features into:
-- Suspected fault
-- Risk level
-- Engineering reasoning
-- Recommended inspection steps
+These features are **explicit, inspectable, and explainable**.
 
-### Retrieval-Augmented Generation (RAG)
-- Historical incidents embedded into FAISS
-- Similar cases retrieved at inference time
-- Injected into LLM prompt to ground reasoning
+#### 3. Engineering Interpretation
+Rule-based logic maps features → fault hypotheses:
+- Bearing overheating
+- Bearing wear
+- Lubrication degradation
 
-### Local LLaMA Reasoning
-- Uses llama.cpp (GGUF)
-- Performs reasoning only
-- Produces structured maintenance decisions
+This mimics how a **maintenance engineer reasons**, not a neural black box.
 
-### Guardrails & Safety
-- Schema validation
-- Confidence gating
-- No autonomous actions
+#### 4. RAG – Historical Maintenance Retrieval
+- Retrieves similar past incidents
+- Provides:
+  - Failure modes
+  - Actions taken
+  - Downtime
+  - Repair costs
+- Grounds the LLM in **real evidence**
 
----
-
-## ✅ Example Output
-
-```json
-{
-  "failure_mode": "bearing_wear",
-  "reasoning": "Localized high-temperature anomaly and historical maintenance records indicate bearing-related degradation.",
-  "recommended_action": "Inspect bearing condition and lubrication. Prepare for bearing replacement if abnormal wear is confirmed.",
-  "downtime_hours_min": 2,
-  "downtime_hours_max": 6,
-  "repair_cost_usd_min": 300,
-  "repair_cost_usd_max": 1200,
-  "confidence": 0.85
-}
-```
+#### 5. Local LLM Reasoning
+Using Mistral-7B (offline):
+- Explains failure mode
+- Recommends safe next steps
+- Estimates downtime & cost
+- Outputs confidence score
 
 ---
 
-## 🖥 User Interface
-A lightweight Streamlit UI is provided for demo purposes:
-- Upload thermal image
-- View extracted features
-- View historical incidents
-- View LLM reasoning
-- View final guarded decision
+### Phase 1 Example Output
+Failure Mode: Bearing wear
+Recommended Action: Inspect bearing and prepare replacement
+Downtime: 2–6 hours
+Cost: $300–$1200
+Confidence: 0.85
 
 ---
 
-## 🏭 Real-World Workflow Fit
-The system fits into factory workflows by enabling early detection of degradation and evidence-based maintenance planning before catastrophic failure.
+# 🔵 PHASE 2 — Safety Guardrails & Risk Governance
+
+Phase 2 answers:
+> **“Is it safe to act on this recommendation?”**
+
+This is the **core differentiator** of the project.
 
 ---
 
-## 🚫 Limitations
-- Not an autonomous control system
-- Uses synthetic data for prototyping
-- Requires human validation before action
+## 1️⃣ Guardrails Layer
+
+### Why Guardrails?
+LLMs can:
+- Hallucinate
+- Output invalid numbers
+- Sound confident when uncertain
+
+### What Guardrails Do
+- Robustly parse LLM output
+- Clamp confidence to [0–1]
+- Block unsafe recommendations
+- Force human review when needed
+
+If confidence is low:
+> The system **refuses automation** and escalates to humans.
 
 ---
 
-## 📈 Expandability
-- Extendable to pumps, gearboxes, compressors
-- Can integrate vibration, acoustic, and IoT sensors
-- Can connect to CMMS / ERP systems
+## 2️⃣ Decision Safety Engine
+
+Evaluates:
+- Evidence strength (from RAG)
+- Signal consistency
+- Action safety
+
+Example output:
+action_safe: true
+evidence_strength: strong
+escalate_to_human: false
 
 ---
 
-## 🧑‍💻 Tech Stack
-- Python
-- OpenCV / NumPy
-- FAISS
-- Sentence Transformers
-- llama.cpp (GGUF)
-- Pydantic
-- Streamlit
+## 3️⃣ Risk-Aware Decision Scoring
+
+Explicitly computes:
+- Severity score
+- Impact score
+- Uncertainty
+- Risk score
+- Risk level: SAFE / CAUTION / CRITICAL
+
+Example:
+risk_score: 6.9
+risk_level: CAUTION
+
+Risk is **visible, auditable, and explainable**.
 
 ---
 
-## 🏁 Final Note
-This project demonstrates how explainable AI, historical knowledge, and local LLMs can be combined to create trustworthy predictive maintenance systems suitable for real industrial deployment.
+# 🟣 PHASE 3 — Temporal Trend Analysis
 
-**This is a decision model — not an autonomous controller.**
+Answers:
+> **“Is this problem getting worse over time?”**
+
+### What It Adds
+- Tracks anomaly features over time
+- Detects worsening / stable / improving trends
+- Refuses to hallucinate trends if data is insufficient
+
+Example:
+trend: insufficient_data
+urgency: low
+
+---
+
+## 🧠 Why This Project Stands Out
+
+| Typical Project | This Copilot |
+|----------------|-------------|
+| Predicts failure | Governs decisions |
+| Black-box ML | Explainable reasoning |
+| One-shot output | Temporal awareness |
+| No safety layer | Explicit guardrails |
+| Blind automation | Human-in-the-loop |
+
+---
+
+## 🏭 Real Factory Workflow Mapping
+
+1. Operator captures thermal image
+2. Copilot detects anomaly
+3. Retrieves similar past incidents
+4. Explains fault reasoning
+5. Applies safety & risk checks
+6. Analyzes trend
+7. Recommends or escalates action
+
+---
+
+## ⚠️ Disclaimer
+
+This system is:
+- ❌ NOT an autonomous controller
+- ✅ A decision-support copilot
+- Designed to assist human engineers
+
+---
