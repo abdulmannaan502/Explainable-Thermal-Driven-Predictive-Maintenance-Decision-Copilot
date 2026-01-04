@@ -1,7 +1,10 @@
 # demo.py
-from urllib import response
 from guardrails.safety_rules import apply_guardrails
 from llm.llama_inference import MaintenanceLLM
+from guardrails.decision_safety import decision_safety_engine
+from guardrails.risk_scoring import risk_aware_decision_engine
+from temporal.trend_analysis import analyze_trend
+
 
 # STEP 1: CV — Thermal preprocessing & anomaly detection
 from cv.thermal_preprocessing import preprocess_thermal_image
@@ -68,6 +71,26 @@ def main():
     
     print("\n=== FINAL GUARDED DECISION (COPILOT OUTPUT) ===")
     print(final_decision.model_dump_json(indent=2))
+
+    safety_report = decision_safety_engine(
+    features=features,
+    fault_info=fault_info,
+    retrieved_logs=retrieved_logs,
+    llm_decision=final_decision.model_dump()
+    )
+    
+    print("\n=== DECISION SAFETY REPORT ===")
+    print(safety_report)
+    
+    risk_report = risk_aware_decision_engine(
+    fault_info=fault_info,
+    retrieved_logs=retrieved_logs,
+    final_decision=final_decision.model_dump()
+    )
+
+    print("\n🚨🚨🚨 RISK AWARE DECISION REPORT 🚨🚨🚨")
+    for k, v in risk_report.items():
+        print(f"{k}: {v}")
 
 
 
